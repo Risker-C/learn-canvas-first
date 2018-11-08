@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .canvas{
+      background: #55f;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" name='canvas' class="canvas" width="800px" height="800px"></canvas>
+  <div class="container"></div>
+</body>
+<script src="./utils.js"></script>
+<script>
+  let canvas = document.querySelector('canvas')
+  let ctx = canvas.getContext('2d')
+
+  // 矩形01
+  ctx.rect(50, 50, 100, 100)
+  ctx.fillStyle = '#5f5'
+  ctx.fill()
+  ctx.stroke()
+
+  // 快速创建带边框矩形
+  ctx.strokeRect(200, 50, 100, 100)
+  // 快速创建填充矩形
+  ctx.fillRect(350, 50, 100, 100)
+
+  ctx.fillRect(500, 50, 100, 100)
+  // 清除矩形(橡皮擦)
+  ctx.clearRect(500, 50, 50, 50)
+
+  // 画圆
+  ctx.beginPath()
+  ctx.arc(100, 300, 50, getRad(0), getRad(360), true)
+  ctx.fill()
+  ctx.stroke()
+
+  // 画半圆
+  ctx.beginPath()
+  ctx.arc(250, 300, 50, getRad(0), getRad(180), true)
+  ctx.closePath()
+  ctx.stroke()
+
+  // 画扇形
+  ctx.beginPath()
+  ctx.moveTo(400, 300)
+  ctx.arc(400, 300, 50, getRad(0), getRad(60))
+  ctx.closePath()
+  ctx.fill()
+  ctx.stroke()
+
+  // 画缺角扇形
+  ctx.beginPath()
+  ctx.moveTo(550, 300)
+  ctx.arc(550, 300, 50, getRad(0), getRad(60), true)
+  ctx.closePath()
+  ctx.fill()
+  ctx.stroke()
+
+
+  // 画一条基线
+  ctx.beginPath()
+  ctx.moveTo(50, 450)
+  ctx.lineTo(600, 450)
+  ctx.stroke()
+
+  // 画一条交叉线
+  ctx.beginPath()
+  ctx.moveTo(325, 350)
+  ctx.lineTo(325, 550)
+  ctx.stroke()
+
+  /**
+  * 文字右对齐
+  **/
+
+  // 纵轴基线右对齐文字
+  ctx.beginPath()
+  // ctx.moveTo(70, 450)
+  ctx.font = "18px '仿宋'"
+  ctx.textAlign = 'right'
+  ctx.fillText('右对齐文字', 325, 370)
+  // ctx.stroke()
+
+  // 横轴基线上右对齐基线是文字边框上方
+  ctx.textBaseline = 'top'
+  ctx.fillText('基线下方文字', 200, 450)
+  // ctx.stroke()
+
+  // 横轴基线右对齐基线是文字边框下方
+  // 绘制文本
+  ctx.textBaseline = 'bottom'
+  ctx.strokeText('基线上方绘制文字', 200, 450)
+
+  /**
+  * 文字左对齐
+  **/
+
+  // 纵轴基线左对齐文本
+  // ctx.beginPath()
+  ctx.textAlign = 'left'
+  ctx.fillText('左对齐文本', 325, 370)
+  // ctx.stroke()
+
+  // 横轴基线左对齐基线是文本上方
+  ctx.textBaseline = 'hanging'
+  ctx.fillText('字母基线下方ABC', 450, 450)
+  // ctx.stroke()
+
+  // 横轴基线左对齐基线是文字框的下面
+  ctx.textBaseline = 'alphabetic' // 默认值
+  ctx.fillText('字母基线上方ABC', 450, 450)
+  // ctx.stroke()
+
+
+  /**
+  * 文字居中对齐
+  **/
+
+  // 纵轴基线居中对齐文本
+  ctx.textAlign = 'center'
+  ctx.fillText('居中对齐文本', 325, 410)
+  // ctx.stroke()
+
+
+  /**
+  * 文字指定位置开始
+  **/
+
+  // 纵轴基线在指定位置开始
+  ctx.textAlign = 'start'
+  ctx.fillText('指定位置开始文本', 325, 520)
+  // ctx.stroke()
+
+  /**
+  * 文字指定位置结束
+  **/
+
+  // 纵轴基线在指定位置结束
+  ctx.textAlign = 'end'
+  ctx.fillText('指定位置结束文本', 325, 520)
+  // ctx.stroke()
+
+  /**
+  * 文字基线水平垂直居中
+  **/
+
+  // 横轴基线纵轴居中
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText('文字水平垂直居中', 325, 450)
+  // ctx.stroke()
+
+  // 绘制图片
+  ctx.moveTo(50, 550)
+  // 声明一个图片的对象
+  let img = new Image()
+  // 设置图片路径
+  img.src = './01.png'
+  // 画图
+  // console.dir(img)
+  let container = document.querySelector('.container')
+  container.innerHTML = img.outerHTML
+  // ctx.beginPath()
+  img.onload = function(){
+    ctx.drawImage(img, 50, 550)
+    ctx.beginPath()
+    ctx.drawImage(img, 50, 730, 100, 50)
+    ctx.beginPath()
+    ctx.drawImage(img, 70, 30, 180, 100, 400, 550, 180, 100)
+  }
+  // ctx.stroke()
+</script>
+</html>

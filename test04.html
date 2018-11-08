@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .canvas{
+      display: block;
+      background: #3af;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" class="canvas" width="500px" height="500px"></canvas>
+  <input type="button" value="开始">
+  <input type="button" value="停止">
+
+</body>
+<script src="./utils.js"></script>
+<script src="./jquery.js"></script>
+  <script>
+    $(function(){
+      let canvas = document.getElementById('canvas')
+      let ctx = canvas.getContext('2d')
+      // 动画id
+      let id = ''
+
+      // 小球初始位置
+      let _ballX = 10
+      let _ballY = 10
+
+      // 小球移动距离
+      let numX = 2
+      let numY = 5
+
+      // 挡板初始X轴位置
+      let _board = 0
+      // 挡板长度
+      let board_length = 20
+      // 挡板移动单位距离
+      let moveX = 40
+
+      // 小球移动函数
+      function go(){
+        ctx.clearRect(0, 0, 500, 500)
+        console.log(_ballX)
+        // 引入挡板
+        board()
+        // 设置小球颜色
+        let color = ctx.createRadialGradient(_ballX, _ballY, 0, _ballX, _ballY, 10)
+        color.addColorStop(0, 'white')
+        color.addColorStop(1, 'black')
+        // 重绘
+        ctx.beginPath()
+        // 绘制小球
+        ctx.fillStyle = color
+        ctx.arc(_ballX, _ballY, 10, getRad(0), getRad(360))
+        ctx.fill()
+        ctx.stroke()
+        // 判断小球位置并反弹
+        rebound()
+        // 计算下一帧小球位置
+        _ballX += numX
+        _ballY += numY
+        // 请求下一帧
+        id = requestAnimationFrame(go)
+      }
+      // 开始动画
+      // requestAnimationFrame(go)
+
+      // 挡板函数
+      function board() {
+        // 挡板颜色
+        ctx.fillStyle = "#ccc"
+        // 绘制挡板
+        ctx.fillRect(_board, 480, 100, board_length)
+      }
+      
+      // 开始游戏，获取焦点，得到键盘事件
+      $('input').eq(0).click(function(){
+        console.log('游戏开始！')
+        console.log(_ballY)
+        requestAnimationFrame(go)
+      })
+      
+      // 停止
+      $('input').eq(1).click(function(){
+        cancelAnimationFrame(id)
+      })
+
+      // 移动挡板函数
+      $('input').keyup(function(event){
+        let code = event.keyCode
+        switch (code) {
+          case 37:
+            _board -= moveX
+            break;
+          case 39:
+            _board += moveX
+            break;
+          default:
+            break;
+        }
+      })
+      
+      // 计算是否反弹函数
+      function rebound() {
+        if(_ballX < 10 || _ballX > 490){numX = -numX}
+        // if(_ballY < 10 || _ballY > 490){numY = -numY}
+
+        if(_ballY < 10){
+          console.log(1)
+          numY = -numY
+        } else if(_ballY > 465 && _ballY < 471){
+          console.log(_ballY)
+          let board_L = _board
+          let board_R = _board + 40
+          console.log(board_L, board_R)
+          console.log(_ballX)
+          if((_ballX > board_L && _ballX < board_R) || ( (460 - _ballX) > board_L && (460 - _ballX) < board_R)){
+            console.log('success: '+ _ballY)
+            numY = -numY
+          } else {
+            // alert('You Lost! Please Again')
+            console.log('error:' + _ballY)
+          }
+        }
+      }
+    })
+  </script>
+</html>

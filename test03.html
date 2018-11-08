@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .canvas{
+      background: #55f;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" name="canvas" class="canvas" width="800px" height="800px"></canvas>
+  <img src="" alt="" id="img">
+</body>
+<script src="./utils.js"></script>
+<script>
+  window.onload = function(){
+    let canvas = document.getElementById('canvas')
+    let ctx = canvas.getContext('2d')
+    // 设置渐变色
+    let grd = ctx.createLinearGradient(0, 0, 170, 0)
+    grd.addColorStop(0, 'white')
+    grd.addColorStop(1, 'black')
+
+   // 阴影 要放在图像前面设置
+    ctx.shadowColor = 'rgba(0, 0, 0, .5)'
+    ctx.shadowBlur = 10;
+    ctx.shadowOffsetX = 10;
+    ctx.shadowOffsetY = 10;
+
+    // 画矩形
+    ctx.moveTo(50, 50)
+    ctx.fillStyle = grd
+    ctx.fillRect(50, 50, 100, 100)
+    
+    // 保存绘制环境
+    ctx.save()
+    // 圆形渐变色(径向渐变)
+    let color = ctx.createRadialGradient(250,100, 0, 250, 100, 50);
+    color.addColorStop(0, 'white')
+    color.addColorStop(1, 'black')
+
+    // 画圆
+    ctx.beginPath()
+    ctx.fillStyle = color
+    ctx.arc(250, 100, 50, getRad(0), getRad(360))
+    ctx.fill()
+    ctx.stroke()
+    
+    // 缩放
+    ctx.scale(.5, .5)
+    ctx.fillRect(700, 100, 200, 200)
+    
+    
+    // 还原绘制环境
+    ctx.restore()
+
+    ctx.save()
+
+    ctx.translate(100, 250)
+    ctx.fillStyle = '#f55'
+    // ctx.fill() 
+    // ctx.moveTo(0, 150)
+    ctx.rotate(getRad(30))
+    ctx.fillRect(-50, -50, 100, 100)
+
+    // 还原绘制环境
+    ctx.restore()
+
+    // 创建两条切线之间的圆弧
+    ctx.beginPath()
+    ctx.moveTo(200, 200)
+    ctx.arcTo(300, 200, 300, 300, 30)
+    // ctx.closePath()
+    ctx.stroke()
+
+    // 设置画布透明度
+    ctx.globalAlpha = 0.5
+
+    // 画布内容输出图片
+    let data = canvas.toDataURL('image/webp', 1)
+    console.log(data)
+    let img = document.getElementById('img')
+    img.src = data
+  }
+</script>
+</html>

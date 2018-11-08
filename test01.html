@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .canvas{
+      background: rgba(154, 245, 8, 0.404);
+    }
+  </style>
+</head>
+<body>
+  <canvas width="500px" height="500px" id="canvas" class="canvas"></canvas>
+</body>
+<script>
+  const canvas = document.querySelector('canvas')
+  // 获取canvas的api(上下文)
+  let ctx = canvas.getContext('2d')
+  // 移动画笔初始点
+  ctx.moveTo(100, 100)
+  ctx.lineTo(300, 100)
+  ctx.lineTo(300, 300)
+  ctx.lineTo(400, 450)
+  // 设置填充色
+  ctx.fillStyle = '#505'
+  // 设置画笔色
+  ctx.strokeStyle = '#f50'
+  // 填充
+  ctx.fill()
+  // 闭合空间
+  ctx.closePath()
+  // 绘画
+  ctx.stroke()
+
+</script>
+</html>
